@@ -24,7 +24,7 @@ class RedisClient {
   * Check if the client  connection to the Redis server is active
   * @returns {boolean}
   */
-  isAlive = () => {
+  isAlive() {
     return this.isClientConnected;
   }
 
