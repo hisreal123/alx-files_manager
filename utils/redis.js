@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import { createClient } from 'redis';
 import { promisify } from 'util';
 
