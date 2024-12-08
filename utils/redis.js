@@ -45,7 +45,8 @@ class RedisClient {
   * @return {Promie<void>}
   */
   async set(key, value, duration) {
-    await promisify(this.client.SETEX).bind(this.client)(key, duration, value);
+    await promisify(this.client.SETEX)
+      .bind(this.client)(key, duration, value);
   }
 
   /**
@@ -54,7 +55,7 @@ class RedisClient {
   * @returns {Promise<void>}
   */
   async del(key) {
-    return promisify(this.client.DEL).bind(this.client)(key);
+    await promisify(this.client.DEL).bind(this.client)(key);
   }
 }
 
