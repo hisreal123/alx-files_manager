@@ -8,7 +8,6 @@ class RedisClient {
   constructor() {
     this.client = createClient();
     this.clientConnected = true;
-
     this.client.on('error', (err) => {
       console.error('Redis client failed to connect:', err.message || err.toString());
       this.clientConnected = false;
@@ -32,7 +31,7 @@ class RedisClient {
   * @returns {String | Object}
   */
   async get(key) {
-    return promisify(this.client.GET).bind(this.client)(key)
+    return promisify(this.client.GET).bind(this.client)(key);
   }
 
   /**
@@ -43,7 +42,7 @@ class RedisClient {
   * @return {Promie<void>}
   */
   async set(key, value, duration) {
-    await promisify(this.client.SETEX).bind(this.client)(key, duration, value)
+    await promisify(this.client.SETEX).bind(this.client)(key, duration, value);
   }
 
   /**
@@ -52,7 +51,7 @@ class RedisClient {
   * @returns {Promise<void>}
   */
   async del(key) {
-    return promisify(this.client.DEL).bind(this.client)(key)
+    return promisify(this.client.DEL).bind(this.client)(key);
   }
 }
 
