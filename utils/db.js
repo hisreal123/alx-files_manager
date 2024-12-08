@@ -18,6 +18,7 @@ class DBClient {
       .catch(() => this.isConnecedToDB = false);
   }
 
+
   isAlive = () => {
     return this.isConnecedToDB;
   };
