@@ -1,5 +1,5 @@
 import { createClient } from 'redis';
-import { promisify } from 'util'
+import { promisify } from 'util';
 
 /**
  * Redis connection
