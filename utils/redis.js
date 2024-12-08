@@ -4,7 +4,6 @@ import { promisify } from 'util';
 /**
  * Redis connection
  */
-
 class RedisClient {
   /**
    * connetion to redis-sever
@@ -20,6 +19,7 @@ class RedisClient {
       this.isClientConnected = true;
     });
   }
+
   /**  
   * Check if the client  connection to the Redis server is active
   * @returns {boolean}
