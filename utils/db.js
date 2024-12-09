@@ -1,23 +1,21 @@
 import "dotenv/config";
-// eslint-disable-next-line no-unused-vars
 import { MongoClient } from "mongodb";
 
 
 class DBClient {
   constructor() {
     const host = process.env.DB_HOST || "localhost";
-    const port = process.env.DB_PORT || 27017;
+    const port = process.env.DB_PORT || 27017
     const database = process.env.DB_DATABASE || "files_manager";
     const dbURL = process.env.DB_URL;
 
     this.isConnecedToDB = false;
 
-    this.client = new MongoClient(dbURL, { useUnifiedTopology: true });
+    this.client = new MongoClient(dbURL, { useUnifiedTopology: true })
     this.client.connect()
       .then(() => this.isConnecedToDB = true)
-      .catch(() => this.isConnecedToDB = false);
+      .catch((_err) => this.isConnecedToDB = false);
   }
-
 
   isAlive = () => {
     return this.isConnecedToDB;
