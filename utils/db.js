@@ -1,59 +1,55 @@
-import "dotenv/config";
-import { MongoClient } from "mongodb";
+import { MongoClient } from 'mongodb';
 
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_PORT = process.env.DB_PORT || 27017;
+const DB_DATABASE = process.env.DB_DATABASE || 'files_manager';
+const url = `mongodb://${DB_HOST}:${DB_PORT}`;
+
+/**
+ * Class for performing operations with Mongo service
+ */
 class DBClient {
   constructor() {
-    console.log(process.env.DB_URL)
-    const dbURL = process.env.DB_URL || "mongodb://localhost:27017/files_manager";
-    this.isConnectedToDB = false;
-
-    this.client = new MongoClient(dbURL);
-
-    // Connect to the database asynchronously
-    this.connectToDB();
+    MongoClient.connect(url, { useUnifiedTopology: true }, (err, client) => {
+      if (!err) {
+        // console.log('Connected successfully to server');
+        this.db = client.db(DB_DATABASE);
+        this.usersCollection = this.db.collection('users');
+        this.filesCollection = this.db.collection('files');
+      } else {
+        console.log(err.message);
+        this.db = false;
+      }
+    });
   }
 
-  async connectToDB() {
-    try {
-      await this.client.connect();
-      this.isConnectedToDB = true;
-      console.log("Successfully connected to the database.");
-    } catch (error) {
-      this.isConnectedToDB = false;
-      console.error("Failed to connect to the database:", error);
-    }
+  /**
+   * Checks if connection to Redis is Alive
+   * @return {boolean} true if connection alive or false if not
+   */
+  isAlive() {
+    return Boolean(this.db);
   }
 
-  isAlive = () => {
-    return this.isConnectedToDB;
-  };
-
+  /**
+   * Returns the number of documents in the collection users
+   * @return {number} amount of users
+   */
   async nbUsers() {
-    try {
-      return this.client.db().collection("users").countDocuments();
-    } catch (error) {
-      console.error("Error counting users:", error);
-      return 0;
-    }
+    const numberOfUsers = this.usersCollection.countDocuments();
+    return numberOfUsers;
   }
 
+  /**
+   * Returns the number of documents in the collection files
+   * @return {number} amount of files
+   */
   async nbFiles() {
-    try {
-      return this.client.db().collection("files").countDocuments();
-    } catch (error) {
-      console.error("Error counting files:", error);
-      return 0;
-    }
-  }
-
-  async userCollection() {
-    return this.client.db().collection("users");
-  }
-
-  async filesCollection() {
-    return this.client.db().collection("files");
+    const numberOfFiles = this.filesCollection.countDocuments();
+    return numberOfFiles;
   }
 }
 
 const dbClient = new DBClient();
+
 export default dbClient;
